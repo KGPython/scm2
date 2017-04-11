@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>商业供应链系统</title>
+</head>
+<body>
+    {% load basefilter %}
+    {% include "common/nav.html" %}
+    <div class="query comWidth" style="width: 100%;text-align: right;">
+        <form method="post" id="submitForm" action=""></form>
+        <p>    <input class="query-enter" type="button" value="打印" onclick="javascript:printContent()">
+           {% comment %} {% ifequal orderstatus.status 'Y'%}
+                <input class="query-enter" type="button" value="打印" onclick="javascript:printContent()">
+            {% else %}
+                <input class="query-enter" type="button" id="saveBtn" value="保存确认" onclick="saveFun()">
+            {% endifequal %}{% endcomment %}
+            <input class="query-enter" type="button" value="返回" onclick="closeFun()">
+        </p>
+    </div>
+    <div class="comWidth" style="width: 100%;text-align: center;">
+         <p>
+            该订单已经打印了&nbsp;<span style="color:dodgerblue;" id="printnumId">{{ order.printnum|default_if_none:"0" }}</span>&nbsp;次！
+         </p>
+    </div>
+    <div class="notice noticeOrder comWidth" id="printContent" style="width: 100%">
+          <div class="tTitle">
+               <h1>{{shop.shopnm}}采购订单</h1>
+               <div class="printHead">
+                    <table class="table-noborder" >
+                        <tr>
+                            <td class="label" style="width:32%;text-align: left;">订单编号：{{ order.ordercode }}</td>
+                            <td class="label" style="width:34%;text-align: left;"></td>
+                            <td class="label" style="width:34%;text-align: left;"></td>
+                        </tr>
+                        <tr>
+                            <td class="label" style="width:32%;text-align: left;">订单类型：</td>
+                            <td class="label" style="width:34%;text-align: left;">管理部类：{{ order.teamcode|trim }}|{{ orgDict|key:order.teamcode }}</td>
+                            <td class="label" style="width:34%;text-align: left;">送货方式：{%if order.logistics == 1 %}直送{% else %}配送{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td class="label" colspan="2"  style="text-align: left;">供应商：{{ order.spercode }}|{{ order.spername }}</td>
+                            <td class="label" style="text-align: left;">供应商联系人：{{ supp.linkmen }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label" style="text-align: left;">结算方式：{{ payTypeDict|key:supp.paytypeid }}</td>
+                            <td class="label" style="text-align: left;">制单日期：<span>{{ order.purdate|date:"Y/m/d H:i:s"  }}</span></td>
+                            <td class="label" style="text-align: left;">供应商传真：<span></span></td>
+                        </tr>
+                        <tr>
+                            <td class="label" style="text-align: left;">订货地：{{ order.shopcode }}|{{ shopDict|key:order.shopcode }}</td>
+                            <td class="label" style="text-align: left;">送货有效期：从{{ order.purdate|date:"Y/m/d"  }}到{{ order.sdate|date:"Y/m/d" }}</td>
+                            <td class="label" style="text-align: left;">供应商电话：{{ supp.phone1 }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label" style="text-align: left;">送货地点：{{ shop.address|trim  }}</td>
+                            <td class="label" style="text-align: left;">预约收货电话：{{ shop.tel|default_if_none:""}}</td>
+                            <td class="label" style="text-align: left;">制单人：<span ></span></td>
+                        </tr>
+                        <tr>
+                            <td class="label" style="text-align: left;">采购员：</td>
+                            <td class="label" style="text-align: left;"><span >备注：</span></td>
+                            <td class="label" style="text-align: left;">审核人：{{ order.checker }}</td>
+                        </tr>
+                    </table>
+                    <table border="0" cellpadding="3" cellspacing="1" align="center" width="90%" style="background-color: #999;margin: 0 auto;margin-top: 5px;margin-bottom:5px; ">
+                        <tbody>
+                            <tr style="background-color:grey;">
+                                  <td style="width: 8%">商品编码</td>
+                                  <td style="width: 7%">商品条码</td>
+                                  <td style="width: 15%">商品名称</td>
+                                  <td style="width: 5%">规格</td>
+                                  <td style="width: 5%">单位</td>
+                                  <td style="width: 5%">件装数</td>
+                                  <td style="width: 5%">订货数量</td>
+                                  <td style="width: 5%">赠品数量</td>
+                                  <td style="width: 8%">含税进价</td>
+                                  <td style="width: 8%">含税金额</td>
+                                  <td style="width: 5%">实收数量</td>
+                                  <td style="width: 8%">生产日期</td>
+                                  <td style="width: 7%">保质期</td>
+                            </tr>
+                            {% for row in detailList %}
+                                <tr style="text-align: left;">
+                                      <td>{{ row.procode }}</td>
+                                      <td>{{ row.barcode }}</td>
+                                      <td>{{ row.pn }}</td>
+                                      <td style="text-align: center;">{{ row.classes|default_if_none:"" }}</td>
+                                      <td style="text-align: center;">{{ row.unit }}</td>
+                                      <td>{{ row.innums|floatformat:0 }}</td>
+                                      <td >{{ row.denums|floatformat:2 }}</td>
+                                      <td></td>
+                                      <td>{{ row.price_intax|floatformat:2 }}</td>
+                                      <td>{{ row.jshj|floatformat:2 }}</td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="tbottom" style="background-color: lightskyblue">
+                                  <td colspan="6" class="sumlabel">至本单合计单品数：({{ detailList|length }})合计项</td>
+                                  <td><span>{{ sum1|floatformat:0 }}</span></td>
+                                  <td colspan="2" class="sumlabel">含税总额：</td>
+                                  <td >{{ sum3|floatformat:2 }}</td>
+                                  <td colspan="3"></td>
+                            </tr>
+
+                            <tr class="tbottom" >
+                                  <td colspan="2">说明</td>
+                                  <td colspan="13" style="text-align: left;"><span class="noprint">A4纸打印。</span>导入：{{ order.scmpurdate|date:"Y-m-d" }}&emsp;打印：{{ today|date:"Y-m-d" }}&emsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table  class="table-noborder2">
+                        <tr>
+                            <td colspan="3" style="text-align: left;font-size: small;">
+                                  <p>
+                                        <span style="margin-top:20px;margin-top:10px;margin-bottom:10px;width: 33%;float:left;">收货员：</span>
+                                        <span style="margin-top:20px;margin-top:10px;margin-bottom:10px;width: 33%;float:left;">验货员：</span>
+                                        <span style="margin-top:20px;margin-top:10px;margin-bottom:10px;width: 34%;float:left;">供应商：</span>
+                                  </p>
+                                  <p>
+                                     1.请供应商送货时附送上订单或在加盖公章的送货单上标明订单编号，无订单的商品本店有权拒绝收获。<br/>
+                                     2.请供应商按指定的时间送货，并提前一天与本收货部预约。如无预约，将安排到最后收货。如延期送货本店有权拒绝收货。<br/>
+                                     3.如订单有问题或暂缺货，请联系本公司采购部。<br/>
+                                     4.签字人员对以上数量完全认可。
+                                  </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+          </div>
+    </div>
+    {% include "common/footer.html" %}
+    <script type="text/javascript">
+        current = "dinghuo"
+        //ajax提交设置csrf
+        $.ajaxSetup({
+            dataType: "json",
+            beforeSend: function(xhr, settings){
+                var csrftoken = $.cookie('csrftoken');
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+        });
+
+        //打印
+        function printContent(){
+            $("#printContent").jqprint();
+            //计算打印次数
+            $.post('/scm/base/supp/order/upprint/', {ordercode: '{{order.ordercode}}'}, function (result, status) {
+                    $("#printnumId").html(result.printnum);
+            });
+        }
+        //关闭窗口
+        function closeFun(){
+            window.opener.location.reload();
+            self.close();
+        }
+
+        //截至日期、制单日期
+        function saveFun(){
+             //1.验证表单
+            sdate = "{{ order.sdate|date:"Y-m-d"  }}";
+            purdate = "{{ order.purdate|date:"Y-m-d"  }}";
+            var today = getToday();
+
+            //截止日期 >= 今日
+            if(dateDiff(sdate,today) < 0){
+                alert("订单超过送货截至日期，无法保存！");
+                return false;
+            }
+            //预期送货日期 < 今日
+            if($("#yyshdate")==undefined || $("#yyshdate").val()==''){
+                alert("预期送货日期不能为空");
+                return false;
+            }
+            var yyshdate = $("#yyshdate").val();
+            if(dateDiff(yyshdate,today) < 0){
+                alert("预期送货日期不能晚于今日");
+                return false;
+            }
+            //预期送货日期 > 截止日期
+            if(dateDiff(yyshdate,sdate) > 0){
+                alert("预期送货日期不能晚于送货截止日期");
+                return false;
+            }
+
+            var ajax_option= {
+                url: "/scm/base/supp/order/save/",
+                data:{"yyshdate":yyshdate,"ordercode":"{{ order.ordercode }}"},
+                type:'post',
+                dataType:'json',
+                async:false,
+                cache: false,
+                beforeSubmit:function(a,f,o){
+                    $("#saveBtn").attr({ disabled: "disabled" });
+                },
+                success: function (data) {
+                    window.location.reload();
+                    if(data.result=='success'){
+                            alert("保存确认成功");
+                    }else{
+                            alert("保存确认失败")
+                    }
+                    $("#saveBtn").attr({ disabled: "none" });
+                }
+            }
+
+            $('#submitForm').ajaxSubmit(ajax_option);
+        }
+
+        //获取今天日期   格式 yyyy-MM-dd
+        function getToday(){
+            var now = new Date();
+            var year=now.getFullYear();
+            var month=now.getMonth()+1;
+            var data=now.getDate();
+                 if(month < 10){
+                     month="0"+month;
+                 }
+
+                 if(data < 10){
+                     data="0"+data;
+                 }
+            return year+"-"+month+"-"+data;
+        }
+        //计算两个日期的天数差：sdate1 - sdate2 = idays
+        // 如 idays > 0 则 sdate1 > sdate2
+        // 如 idays = 0 则 sdate1 = sdate2
+        // 如 idays < 0 则 sdate1 < sdate2
+        function dateDiff(sdate1,sdate2){
+            var adate,odate1,odate2,idays ;
+            adate =sdate1.split('-');
+            odate1 = new Date(adate[1]+'-'+adate[2]+'-'+adate[0]) ;
+            //转换为04-19-2007格式
+            adate = sdate2.split('-');
+            odate2 = new Date(adate[1]+'-'+ adate[2] +'-'+adate[0]);
+
+            idays = parseInt((odate1 - odate2)/1000/60/60/24);//把相差的毫秒数转换为天数 Math.abs()
+
+            return idays ;
+         }
+
+        //定义日期样式
+        !function(){
+            laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+        }();
+
+        //日期范围限制
+        var start = {
+            elem: '#start',
+            format: 'YYYY-MM-DD',
+            //min: laydate.now(), //设定最小日期为当前日期
+            max: '2099-06-16', //最大日期
+            istime: true,
+            istoday: false,
+            choose: function(datas){
+               end.min = datas; //开始日选好后，重置结束日的最小日期
+               end.start = datas //将结束日的初始值设定为开始日
+            }
+        };
+
+        var end = {
+            elem: '#end',
+            format: 'YYYY-MM-DD',
+            //min: laydate.now(),
+            max: '2099-06-16',
+            istime: true,
+            istoday: false,
+            choose: function(datas){
+              start.max = datas; //结束日选好后，充值开始日的最大日期
+            }
+        };
+
+        var yyshdate = {
+            elem: '#yyshdate',
+            format: 'YYYY-MM-DD',
+            //min: laydate.now(), //设定最小日期为当前日期
+            max: '2099-06-16', //最大日期
+            istime: true,
+            istoday: false,
+            choose: function(datas){
+               end.min = datas; //开始日选好后，重置结束日的最小日期
+               end.start = datas //将结束日的初始值设定为开始日
+            }
+        };
+
+        laydate(start);
+        laydate(end);
+        laydate(yyshdate);
+    </script>
+</body>
+</html>

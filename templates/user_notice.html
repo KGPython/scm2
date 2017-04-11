@@ -1,0 +1,197 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            商业供应链系统
+        </title>
+    </head>
+    <body>       
+        {% include "common/nav.html" %}
+        <div class="query retail_notice comWidth" style="height: 55px;">
+            <form class="query-list" action="{% url 'msglist' %}" method="post">
+                {% csrf_token %}
+                <p class="input">
+                    <label>编号：</label>
+                    {{ form.infocode }}
+                </p>
+                <p class="date input">
+                    <label for="start">提交日期：</label>
+                    {{ form.start }}
+                    {{ form.start.errors }}
+                </p>
+                <p class="date input">
+                    <label for="start">结束日期：</label>
+                    {{ form.end }}
+                    {{ form.start.errors }}
+                </p>
+                <input class="query-enter" type="hidden" id="flag" name="flag" value="">
+                <p class="input">
+                    <input  class="query-enter" type="submit" value="收到信息查询" onclick="flagFun('msgIn')">
+                </p>
+                <p class="input">
+                    <input  class="query-enter" type="submit" value="发出信息查询" onclick="flagFun('msgOut')">
+                </p>
+                <p class="input">
+                    {% if userType == "2" %}
+                        <a class="button" href="{% url 'msgCreate' %}?infotype=1" style="margin-top: 19px">新建</a>
+                    {% elif userType == "1" %}
+                        <a class="button" href="{% url 'msgCreate' %}?infotype=0" style="margin-top: 19px">新建</a>
+                    {% endif %}
+                </p>
+            </form>
+        </div>
+        <div class="mainNotice comWidth" style="margin-top:20px">
+            <table border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                <thead>
+                    <tr>
+                        <th>
+                            编号
+                        </th>
+                        <th>
+                            标题
+                        </th>
+                        <th>
+                            接收人
+                        </th>
+                        <th>
+                            提交时间
+                        </th>
+                        <th>
+                            单位
+                        </th>
+                        <th>
+                            发送人
+                        </th>
+                        <th>
+                            内容
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for info in infoList %}
+                    <tr>
+                        <td>{{ info.infocode }}</td>
+                        <td>{{ info.title }}</td>
+                        <td>
+                            {% if info.depart == '-1' %}
+                                 全部
+                            {% else %}
+                                {{ info.depart|default_if_none:"" }}
+                            {% endif %}
+                        </td>
+                        <td>{{ info.subtime|date:"Y-m-d H:i" }}</td>
+                        <td>{{ info.usergrpname }}</td>
+                        <td>{{ info.username }}</td>
+                        <td>
+                            <a href="{% url 'msgPreview' %}?infocode={{ info.infocode }}&flag={{ flag }}&start={{ start }}&end={{ end }}&q_infocode={{ infoCode }}">浏览</a>
+                            {% if userCode == info.checker %}
+                            <a href="{% url 'msgCreate' %}?infocode={{ info.infocode }}&infotype=1">修改</a>
+                            <a href="{% url 'msglist' %}?action=del&infocode={{ info.infocode }}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if flag %}&flag={{ flag }}{% endif %}" onclick="return confirmFun()">删除</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="page">
+               <span>第<b>{{ page }}</b>页/共<b>{{ infoList.paginator.num_pages }}</b>页</span>
+                <a href="?page=1{% if infoCode %}&infocode={{ infoCode }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if flag %}&flag={{ flag }}{% endif %}">首页</a>
+
+                {% if infoList.has_previous %}
+                <a href="?page={{ infoList.previous_page_number }}{% if infoCode %}&infocode={{ infoCode }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if flag %}&flag={{ flag }}{% endif %}">上一页</a>
+                {% else %}
+                <a href="javascript:;">上一页</a>
+                {% endif %}
+
+                {% if infoList.has_next %}
+                <a href="?page={{ infoList.next_page_number }}{% if infoCode %}&infocode={{ infoCode }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if flag %}&flag={{ flag }}{% endif %}">下一页</a>
+                {% else %}
+                <a href="javascript:;">下一页</a>
+                {% endif %}
+
+                <a href="?page={{ infoList.paginator.num_pages }}{% if infoCode %}&infocode={{ infoCode }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if flag %}&flag={{ flag }}{% endif %}">尾页</a>
+                <form id="pageForm" name="pageForm" method="get">
+                    <input name="flag" type="hidden" value="{{ flag }}">
+                    <input name="infocode" type="hidden" value="{{ infoCode }}">
+                    <input name="start" type="hidden" value="{{ start }}">
+                    <input name="end" type="hidden" value="{{ end }}">
+                    <span class="totalPage">到第</span>
+                    <input class="pageTxt" id="page" name="page" type="text" value="1">
+                    <span>页</span>
+                    <input value="确定" id="pageEnter" type="button">
+                </form>
+            </div>
+
+        {% include "common/footer.html" %}
+        <script type="text/javascript">
+            current = "tongzhi"
+            $(function(){
+                $("#pageEnter").on("click",function(){
+
+                    var pageNum = $("#page").val();
+
+                    if(!isNaN(pageNum) && pageNum!=''){
+                        var num = parseInt(pageNum);
+                        var maxNum = parseInt('{{ infoList.paginator.num_pages }}');
+
+                        if(num<1){
+                             $("#page").val(1);
+                        }
+                        if(num>maxNum){
+                            $("#page").val(maxNum);
+                        }
+                    }else{
+                         $("#page").val(1);
+                    }
+                    $("#pageForm").submit();
+                });
+            });
+            !function(){
+                laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+            }();
+
+            //日期范围限制
+            var start = {
+                elem: '#start',
+                format: 'YYYY-MM-DD',
+                //min: laydate.now(), //设定最小日期为当前日期
+                max: '2099-06-16', //最大日期
+                istime: true,
+                istoday: false,
+                choose: function(datas){
+                   end.min = datas; //开始日选好后，重置结束日的最小日期
+                   end.start = datas //将结束日的初始值设定为开始日
+                }
+            };
+
+            var end = {
+                elem: '#end',
+                format: 'YYYY-MM-DD',
+                //min: laydate.now(),
+                max: '2099-06-16',
+                istime: true,
+                istoday: false,
+                choose: function(datas){
+                    start.max = datas; //结束日选好后，充值开始日的最大日期
+                }
+            };
+            laydate(start);
+            laydate(end);
+
+        </script>
+        <script>
+            function flagFun(flag){
+                $("#flag").attr("value",flag);
+            }
+
+            function confirmFun(){
+                if(confirm('确认要删除此条记录？')){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>

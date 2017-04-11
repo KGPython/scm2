@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>商业供应链系统</title>
+    <style>
+        .box-line{
+            overflow: hidden;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            float: left;
+        }
+        .box-line p{
+            float: left;
+            text-align: right;
+        }
+        .box-line p label{
+            margin-bottom:5px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    {% load basefilter %}
+    {% include "common/nav.html" %}
+    <form id="billForm" method="post" action="/scm/base/balance/apply/save/">
+        <input type="hidden" name="sheetId" value="{{ sheetId }}">
+        <input type="hidden" name="balancePlaceId" value="{{ balancePlaceId }}">
+        <input type="hidden" name="pstart" value="{{ pstart }}">
+        <input type="hidden" name="pend" value="{{ pend }}">
+        <input type="hidden" name="cstart" value="{{ cstart }}">
+        <input type="hidden" name="cend" value="{{ cend }}">
+        <input type="hidden" id="kxinvoice" value="{{ kxinvoice }}">
+
+        <div class="notice comWidth">
+            <div class="tTitle">
+                <h1>结算申请单 </h1>
+                <div class="inputBox settleApply" >
+                    <div class="box-line">
+                        <p><label>结算地：</label>
+                            <span>{{ balancePlaceId }}|{{ balancePlaceName }}</span>
+                        </p>
+                        <p><label>结算方式：</label>
+                            <span>{{ payTypeName }}</span>
+                        </p>
+                        <p>
+                            <label>结算日期：</label>
+                            <span>{{ pstart }}至{{ pend }}</span>
+                        </p>
+                        <p>
+                            <label>单据日期：</label>
+                            <span>{{ cstart }}至{{ cend }}</span>
+                        </p>
+                    </div>
+                    <div class="box-line">
+                        <p><label>应付金额：</label><span id="payablemoney">{{ payablemoney|floatformat:2|default_if_none:"" }}</span></p>
+                        <p><label>实付金额：</label><span id="paidmoney">{{ paidmoney|floatformat:2|default_if_none:"" }}</span></p>
+                        <p><label>应开票金额：</label><span id="paidinvoice">{{ paidmoney|floatformat:2|default_if_none:"" }}</span></p>
+                        <p><label>帐扣金额：</label><span>{{ kxinvoice|floatformat:2|default_if_none:"" }}</span></p>
+                        <p><label>帐扣可冲发票金额：</label><span style="width: 60px">{{ zkinvoice|floatformat:2|default_if_none:"" }}</span></p>
+                    </div>
+                    <input class="query-enter right" type="button" value="查询帐扣明细" style="margin-left: 10px;" onclick="openWin()">
+                </div>
+            </div>
+            <div style="text-align: left;font-size: 13px;"><span style="color: red;">※</span>&nbsp;当日提交的结算申请单，<span style="color: red;font-size: 14px;">次日</span>才可在导航菜单：结算->查询结算申请单,中查看结算单状态。</div>
+            <table  border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                <thead>
+                    <tr>
+                        <th>全选<br><input type="checkbox" id="billAll" /></th>
+                        <th>结算类型</th>
+                        <th>发生店编码</th>
+                        <th>发生店名称</th>
+                        <th>相关单号</th>
+                        <th>应结金额<br>（含税）</th>
+                        <th>不含税金额</th>
+                        <th>税金</th>
+                        <th>单据名称</th>
+                        <th>管理类别<br>编码</th>
+                        <th>销售金额</th>
+                        <th>进项<br>税率</th>
+                        <th>是否<br>农产品</th>
+                        <th>应付日期</th>
+                        <th>发票接收单号</th>
+                        <th>倒扣率</th>
+                        <th>原始单号</th>
+                        <th>原始单据类型名称</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itemList %}
+                        <tr>
+                            <td style="width: 4%;word-break:break-all; word-wrap:break-word;">
+                                <input type="checkbox" id="{{ forloop.counter }}" name="refsheetid" rtype="{{ item.refsheettype }}" value="{'paytypesortid':'{{item.paytypesortid}}','payabledate':'{{item.payabledate}}','refsheetid':'{{ item.refsheetid }}','refsheettype':{{ item.refsheettype }},'managedeptid':{{ item.managedeptid }},'fromshopid':'{{ item.fromshopid }}','inshopid':'{{ item.inshopid }}','costvalue':{{ item.costvalue }},'costtaxvalue':{{ item.costtaxvalue }},'costtaxrate':{{ item.costtaxrate }},'agroflag':{{ item.agroflag }},'salevalue':{{ item.salevalue }},'invoicesheetid':'{{ item.invoicesheetid }}','Dkrate':'{{ item.Dkrate }}' }"  onchange="count();" {% if item.refsheettype == 2323 or item.refsheettype == 5205 %} onclick="return false;" checked {% endif %}>
+                            </td>
+                            <td style="width:4%;word-break:break-all; word-wrap:break-word;">{{ contractTypeDict|key:item.paytypesortid }}</td>
+                            <td style="width: 5%;word-break:break-all; word-wrap:break-word;">{{ item.inshopid }}</td>
+                            <td style="width: 6%;word-break:break-all; word-wrap:break-word;">{{ shopDict|key:item.inshopid }}</td>
+                            <td style="width: 8%;word-break:break-all; word-wrap:break-word;">{{ item.refsheetid }}</td>
+                            <td style="width: 4%;word-break:break-all; word-wrap:break-word;" id="costvalue_{{ forloop.counter }}" val="{{ item.costvalue }}">{{ item.costvalue }}</td>
+                            <td style="width: 4%;word-break:break-all; word-wrap:break-word;">{{ item.notaxvalue }}</td>
+                            <td style="width: 4%;word-break:break-all; word-wrap:break-word;">{{ item.costtaxvalue }}</td>
+                            <td style="width: 8%;word-break:break-all; word-wrap:break-word;">{{ item.sheetname }}</td>
+                            <td style="width: 6%;word-break:break-all; word-wrap:break-word;">{{ item.managedeptid|fillZero:1 }}</td>
+                            <td style="width: 4%;word-break:break-all; word-wrap:break-word;">{{ item.salevalue }}</td>
+                            <td style="width: 5%;word-break:break-all; word-wrap:break-word;">{{ item.costtaxrate }}</td>
+                            <td style="width: 5%;word-break:break-all; word-wrap:break-word;">{{ item.agroflag|isYes }}</td>
+                            <td style="width: 8%;word-break:break-all; word-wrap:break-word;">{{ item.payabledate}}</td>
+                            <td style="width: 6%;word-break:break-all; word-wrap:break-word;">{{ item.invoicesheetid }}</td>
+                            <td style="width: 5%;word-break:break-all; word-wrap:break-word;">{{ item.Dkrate }}</td>
+                            <td style="width: 8%;word-break:break-all; word-wrap:break-word;">{{ item.Adjustsheetid|default_if_none:"" }}</td>
+                            <td style="width: 10%;word-break:break-all; word-wrap:break-word;">{{ item.Adjustsheetname|default_if_none:"" }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr >
+                        <td></td>
+                        <td></td>
+                        <td >合计：</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sum1 }}</td>
+                        <td>{{ sum2 }}</td>
+                        <td>{{ sum3 }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sum4 }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div class="pageBottom-btn ">
+                <p>
+                    <input class="query-enter right" type="button" value="提交" id="submitBtn" style="margin-left: 10px;">
+                    <input class="query-enter right" type="button" value="取消" onclick="window.location.href='/scm/base/supp/home/'">
+                </p>
+            </div>
+        </div>
+    </form>
+    <form id="invioceForm" action="/scm/base/supp/invoice/" method="post">
+           <input type="hidden" id="isheetid" name="sheetid" value="">
+    </form>
+
+    <div id="loading_shelter" class="shelter"></div>
+    <div id="loading" class="common_load">
+            <img style="margin-left:60px;" src="{{ static }}/image/loading2.gif" height="80" width="80" alt="数据提交中，请稍后..." />
+            <span id="loading_desc" class="load_descript"></span>
+    </div>
+
+    {% include "common/footer.html" %}
+	<script type="text/javascript">
+        current = "jiesuan";
+        $(function(){
+            count();
+
+            $("#billAll").on("change",function(){
+                if($(this).prop('checked')){
+                    $("input:checkbox[name='refsheetid']").prop('checked',true);
+                }else{
+                    clearAll();
+                }
+                count();
+            });
+
+            $("#billReverse").on("change",function(){
+                $("input:checkbox[name='refsheetid']").each(function(){
+                    if(!$(this).attr("checked")){
+                        $(this).prop('checked',function(index, oldValue){
+
+                            return !oldValue;
+                        });
+                    }
+                });
+                count();
+            });
+
+            $("#submitBtn").on("click",function(){
+                 var len = $("input:checkbox[name='refsheetid']:checked").length
+                 if(len<=0){
+                     alert("请选择要结算的单据！");
+                     return false;
+                 }else{
+                        var ajax_option= {
+                            url: "/scm/base/balance/apply/save/",
+                            data:$('#billForm').serialize(),
+                            type:'post',
+                            dataType:'json',
+                            async:false,
+                            cache: false,
+                            beforeSubmit:function(a,f,o){
+                                show_loading("",true);
+                            },
+                            success: function (result) {
+                                show_loading("",false);
+                                var status = result.status;
+                                var sheetId = result.sheetId;
+                                if(status=='1') {
+                                    alert("结算申请单提交失败！");
+                                }else if(status=='2'){
+                                    alert("当前时间不在编辑结算申请单的时间范围内或结算申请单已经提交,不可重复提交！");
+                                }else{
+                                    window.location.reload();
+                                    alert("["+sheetId+"]操作成功,单据审核通过后请及时开发票并录入系统。");
+                                }
+                            }
+                        }
+
+                        if(confirm("确认提交吗？")){
+                            $('#billForm').ajaxSubmit(ajax_option);
+                        }
+                 }
+            });
+        });
+        function openWin(){
+            window.open("/scm/base/balance/apply/findKxlist/?pend={{ pend }}",'kxinfo')
+        }
+
+        function clearAll(){
+              $("input:checkbox[name='refsheetid']").each(function(){
+                  rtype = $(this).attr("rtype");
+                  if(rtype != "2323" && rtype != "5205"){
+                      $(this).prop('checked',false);
+                  }
+            });
+        }
+
+        function count(){
+            costvalueSum = 0.0;
+            kxinvoice = $("#kxinvoice").val();
+
+            $("input:checkbox[name='refsheetid']:checked").each(function(){
+                  index = $(this).attr("id");
+                  costvalue = $("#costvalue_"+index).text();
+                  costvalueSum += parseFloat(costvalue);
+            });
+            $("#payablemoney").html(costvalueSum.toFixed(2));
+            $("#paidmoney").html((costvalueSum-kxinvoice).toFixed(2));
+            $("#paidinvoice").html((costvalueSum-kxinvoice).toFixed(2));
+        }
+
+	  	!function(){
+		    laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+		}();
+
+		//日期范围限制
+		var start = {
+			elem: '#start',
+			format: 'YYYY-MM-DD',
+		    max: '2099-06-16', //最大日期
+		    istime: false,
+		    istoday: true,
+		    choose: function(datas){
+		        end.min = datas; //开始日选好后，重置结束日的最小日期
+		        end.start = datas //将结束日的初始值设定为开始日
+		    }
+		};
+
+		var end = {
+			elem: '#end',
+			format: 'YYYY-MM-DD',
+			max: '2099-06-16',
+			istime: false,
+			istoday: true,
+			choose: function(datas){
+	          start.max = datas; //结束日选好后，充值开始日的最大日期
+	        }
+	    };
+	    laydate(start);
+	    laydate(end);
+  	</script>
+    <script type="text/javascript">
+        function show_loading(loading_desc,isShow){
+            loading_desc = loading_desc||'数据提交中，请稍后...';
+            $('#loading_desc').text(loading_desc);
+            var wnd = $(window), doc = $(document);
+            var height = document.body.scrollHeight;
+            var width = document.body.scrollWidth;
+            var $load = $('#loading');
+            var left = doc.scrollLeft();
+            var top = doc.scrollTop();
+            left += (wnd.width() - $load.width())/2;
+            top += (wnd.height() - $load.height())/2;
+            $load.css({"left": left + "px","top":top + "px","display":"block"});
+
+            var $shelter = $('#loading_shelter');
+            $shelter.height($(document).height());
+            $shelter.width($(document).width());
+            if(isShow){
+                $shelter.show();
+                $load.show();
+            }else{
+                $shelter.hide();
+                $load.hide();
+            }
+        }
+    </script>
+</body>
+</html>

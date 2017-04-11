@@ -1,0 +1,156 @@
+{% load basefilter %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>商业供应链系统</title>
+    </head>
+    <body>       
+       {% include "common/nav.html" %}
+        <div class="query comWidth">
+            <form class="query-list" method="post" id="queryForm" name="queryForm">
+                {% csrf_token %}
+                <div class="shopList input">
+                    <label>门店：</label>
+                    {{ form.shopCode }}
+                    <span class="shopList-icon"></span>
+                    <div class="shopList-cnt">
+                        <p class="shopList-cnt-tit">
+                           {% comment %} <span>门店：</span>{% endcomment %}
+                            <input type="checkbox" name="" id="" class="all"><label for="" style="display: inline">全选/全不选</label>
+                            <input class="enter" type="button" value="确定">
+                            <input class="close" type="button" value="放弃">
+                        </p>
+                        <table border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>门店编码</th>
+                                    <th>门店名称</th>
+                                  {% comment %}  <th>经营方式</th>{% endcomment %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for shop in shopList %}
+                                <tr>
+                                    <td><input type="checkbox" name="" id="" value="{{ shop.shopcode }}" title="{{ shop.shopnm }}"></td>
+                                    <td >{{ shop.shopcode }}</td>
+                                    <td class="shopNm">{{ shop.shopnm }}</td>
+                                   {% comment %} <td></td>{% endcomment %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <p class="input">
+                    <label>商品条码：</label>
+                    {{ form.barcode }}
+                </p>
+                <p class="num input">
+                    <label>库存范围：</label>
+                    {{ form.num1 }}
+                    <span>&lt;=库存数量&lt;=</span>
+                    {{ form.num2 }}
+                </p>
+                {{ form.num1.errors }}
+                {{ form.num2.errors }}
+                <p class="input">
+                    <label>商品类别：</label>
+                    {{ form.scCode }}
+                </p>
+                <p class="input">
+                    <label>商品名称：</label>
+                    {{ form.proName }}
+
+                </p>
+
+                <p class="input">
+                    <label>订单状态</label>
+                    {{ form.status }}
+                </p>
+                <div class="from-row pull-right" style="display: inline-block">
+                    <p class="input">
+                        <input class="query-enter" id="queryOut" type="submit" value="查询" onclick="outQuery()">
+                    </p>
+                    <p class="input">
+                        <input class="query-enter" id="excelOut" type="submit" value="导出到EXCEL" onclick="outQxcel()">
+                    </p>
+                </div>
+
+            </form>
+
+        </div>
+        <div class="notice noticeOrder comWidth">
+            <div class="tTitle">
+                <h1>
+                    库存单据列表
+                </h1>
+                <h3>
+                    单位：<span>{{ grpName }}</span>
+                </h3>
+                <p>
+                    门店：
+                    <span class="shopListTxt">
+                    {% if shopCode %}
+                        {% for id in shopCode %}
+                           {{ shopDict | key:id}}，
+                        {% endfor %}
+                    {% else %}
+                        全部
+                    {% endif %}
+{#                    {% for stcok in stockList %}#}
+{#                        {{ shopDict | key:stcok.shopcode }}，#}
+{#                    {% endfor %}#}
+                    </span>
+                </p>
+            </div>
+            <table border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                <thead>
+                    <tr>
+                        <th>门店</th>
+                        <th>库存数量</th>
+                        <th>库存进价含税金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for stock in stockList %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'stockArticle' %}?shopcode={{ stock.shopcode }}&proCode={{ proCode }}&num1={{ num1 }}&num2={{ num2 }}&scCode={{ scCode }}&proName={{ proName }}&orderStyle={{ orderStyle }}">
+                                {{ shopDict | key:stock.shopcode }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ stock.num | floatformat:2 }}
+                        </td>
+                        <td>
+                            {{ stock.sums_intax | floatformat:3 }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td>合计：</td>
+                        <td>{{ totalNum | floatformat:2 }}</td>
+                        <td>{{ totalSumsIntax | floatformat:3 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% include "common/footer.html" %}
+        <script>
+            current ="kucun";
+            $(function(){
+                $(".errorlist").css({
+                    "margin-left":"-240px",
+                    "margin-top":"60px"
+                })
+            })
+            function outQuery(){
+                document.queryForm.action ="{% url 'supplierStock' %}?action=outQuery";
+            }
+            function outQxcel(){
+                document.queryForm.action ="{% url 'supplierStock' %}?action=outExcel";
+            }
+        </script>
+    </body>
+</html>

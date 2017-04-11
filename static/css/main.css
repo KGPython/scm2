@@ -1,0 +1,1358 @@
+input[type="button"],
+input[type="submit"],
+.button{
+	padding:0 10px;
+	height: 35px;
+	/*line-height: 35px;*/
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	text-align: center;
+	color: #fff;
+}
+.button{
+	min-width: 80px;
+	min-height: 35px;
+	line-height: 35px;
+	display: inline-block;
+	color: #fff;
+}
+.button:hover{
+	color: #fff;
+	text-decoration:none ;
+}
+.table-noborder{
+	border: 0;
+}
+/*
+***************************************用户登录页****************************************
+*/
+
+.login-main{
+	margin:0 auto;
+	width: 800px;
+	overflow: hidden;
+	text-align: center;
+}
+.l-main-title{
+	margin-bottom: 100px;
+	margin-top: 100px;
+	height: 50px;
+	background:url("../image/login_title.png") no-repeat center;
+}
+.l-main-content p{
+	margin-bottom:30px;
+	font-size: 20px;
+	color: #fff;
+}
+.l-main-content p input{
+	padding: 0 5px;
+	margin-left:20px;
+	width: 350px;
+	height: 45px;
+	line-height:45px;
+	text-indent: 5px;
+	border-radius:5px ;
+}
+.l-main-content .validate img{
+	display: inline-block;
+	width: 90px;
+	height: 45px;
+	margin-left: 10px;
+	margin-right:10px;
+}
+.l-main-content .validate a{
+	color:#fff;
+	font-size: 20px;
+}
+.l-main-content p .enter{
+	margin-top:10px;
+	margin-left:70px; 
+	width: 250px;
+	height: 46px;
+	background-color: #6CC362;
+	border-color: #2E6DA4;
+	color:#fff;
+	font-size: 20px
+}  
+.browserDownload{
+	position: relative;
+	display: none;
+	text-align: left;
+	font-size:14px;
+	padding-left:5px;
+}
+/*
+***************************************头部导航****************************************
+*/ 
+.header{
+	line-height: 50px;
+	background: #efefef;
+	margin-bottom:30px;
+	box-shadow: 0px 1px 5px #000; 
+	height: 60px;
+	+border:1px solid #666;
+	/*min-width: 1300px;*/
+}
+.nav{
+	width:100%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+}
+.nav .nav-list{
+	height: 100%;
+	background: #efefef;
+}
+.nav .nav-list .nav-list-item{
+	position: relative;
+	float: left;
+	width: 140px; /* 增加菜单宽度显示（慢）  */
+	font-size: 14px;
+	z-index: 1000;
+}
+.nav-item-icon{
+	color: #337AB7;
+	margin-left: 10px;
+	font-size:10px;
+}
+.nav-list a{
+	display: block;
+	padding:0px 10px;
+	height: inherit;
+	line-height: 58px;
+	text-align: center;	
+}
+.nav-list a:hover{
+	text-decoration: none;
+}
+.nav-list2{
+	position: absolute;
+	left:0;
+	top:58px;
+	+top:58px;
+	display: none;
+	width: 120%;
+	clear: both;
+	background: #FFF ;
+	border:1px solid #EFEFEF;
+	border-top:none;
+	z-index: 1000;
+}
+.nav-list2 li{
+	height: 45px;
+	text-align: center;
+	border-bottom:1px dotted #fff; 
+	border-top: 1px dotted #ddd; 
+}
+.nav-list2 li a{
+	line-height: 45px;
+	font-size: 12px;
+}
+
+/*
+***************************************查询表单模块****************************************
+*/
+.from-row{
+    overflow: hidden;
+    clear: both;
+}
+.query{
+	margin-bottom:20px;
+	overflow: unset;
+}
+
+.query-list{
+	display: block;
+	margin: 0 auto;
+	float: left;
+	width: 100%;
+}
+.query .query-list .input{
+	float: left;
+	margin-right: 19px;
+}
+
+.query .query-list .input label{
+	display: block;
+	margin-bottom:5px; 
+}
+.query .query-list .input select{
+	height: 30px;
+	line-height: 30px;
+	text-indent: 10px;
+	width: 120px;
+}
+.query .query-list .input input[type="text"],
+.query .query-list .input input[type="password"]{
+	height: 30px;
+	line-height: 30px;
+	text-indent: 10px;
+}
+.query .query-list .input input[type="text"],
+.query .query-list .input input[type="password"]{
+	background-color: #fff
+}
+.query-enter,
+.query-print,
+.printBtn,
+.outPut{
+	display: inline-block;
+	padding: 6px 12px;
+	margin-top: 19px;
+	margin-left: 15px;
+	color: #FFF;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.outPut{
+	border: 1px solid #337AB7;
+}
+.outPut:hover{
+	color: #fff;
+	text-decoration: none;
+	border: 1px solid #66AFE9;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
+}
+.printBtn{
+	display: block;
+	margin: 50px auto;
+	width: 300px;
+	height: 50px;
+	line-height: 50px;
+	border: 10px;
+}
+.shopList,
+.scList{position: relative;z-index: 99}
+.shopList .shopList-icon,
+.scList .scList-icon{
+	position: absolute;
+	right:-20px;
+	top: 30px;
+	display: block;
+	+display:block;
+	width: 20px;
+	height: 20px;
+	background:url("../image/plus.gif") no-repeat center;
+	cursor: pointer;
+}
+.shopList-cnt,
+.scList-cnt,
+.powerSet-box{
+	display: none;
+	z-index: 99999;
+	position: absolute;
+	top:50px;
+	left: 0;
+	width: 450px;
+	height: 450px;
+	background: #efefef;
+	overflow: auto;
+	border: 1px solid #ccc
+}
+.scList-cnt{
+	width: 450px;
+	height: 450px;
+	margin: 0;
+}
+.shopList-cnt-tit,
+.scList-cnt-tit{
+	width: 100%;
+	height: 45px;
+	background: #ddd;
+	line-height: 45px;
+	padding-left: 5px;
+}
+
+.shopList-cnt-tit span,
+.scList-cnt-tit span{
+	margin-right:100px; 
+	margin-left:10px; 
+}
+.shopList-cnt-tit label,
+.scList-cnt-tit label{
+	margin-right:30px; 
+}
+.shopList-cnt-tit input,
+.scList-cnt-tit input{
+	display: inline-block;
+	margin-right:10px; 
+	margin-top: 10px;
+	background: none;
+}
+.shopList-cnt-tit input[type="submit"],
+.shopList-cnt-tit input[type="button"],
+.scList-cnt-tit input[type="submit"],
+.scList-cnt-tit input[type="button"]
+{
+	background: #337AB7;
+	color:#fff;
+	padding: 0 10px;
+	height: 30px;
+}
+
+.shopList-cnt th,
+.scList-cnt th{
+	font-size: 14px
+}
+.shopList-cnt table td input{background: none}
+.errorlist{
+	display:block;
+	float: left;
+	margin-top: 55px;
+	margin-left: -190px;
+	height: 25px;
+	color: darkred;
+}
+.query-list #end,
+.query-list #start{
+	width: 139px;
+}
+/*
+***************************************表格模块****************************************
+*/
+.shopListTxt{
+	display: inline-block;
+}
+.tTitle{
+	margin-top:10px; 
+	margin-bottom:15px;
+	text-align: center;
+}
+.tTitle-report{
+	position: fixed;
+	top: 80px;
+	width: 100%;
+}
+.tTitle p b{
+	margin-left:20px; 
+}
+#tableReport{
+	margin-top: 160px;
+}
+table{
+	width: 100%;
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+	background: #999;
+}
+table th {
+	font-size:15px;
+	font-weight: bold;
+	text-align: center;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ccc;
+}
+table td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #e5e5e5;
+	text-align: center;
+	font-size: 12px;
+}
+tbody a{
+	color: #337AB7
+}
+/*
+***************************************首页****************************************
+*/
+.noticeHome{
+	width: 1000px;
+}
+.mainHome .sideNav{
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-right:10px;
+	margin-top:100px;
+	margin-bottom:500px;
+	width: 200px;
+	overflow: hidden;
+}
+.sideNav .sideNav-list .sideNav-list-item a{
+	display: block;
+	padding:6px 12px;
+	margin-top:25px;
+	height: 34px;
+	line-height: 34px;
+	color: #FFF;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 16px;
+}
+/*
+***************************************协同信息****************************************
+*/
+.retail_notice .query-list p label{
+	display: inline-block;
+}
+.retail_notice .query-list p input[type="button"]{
+	padding:0 10px;
+	height: 35px;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 16px; 
+	color: #fff;
+}
+.tTitle input{
+	padding:3px 6px;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 16px; 
+	color: #fff;
+}
+.tTitle .back{
+	margin-left:50px;
+	margin-right:20px  
+}
+/*
+***************************************通知内容页****************************************
+*/
+.articleNotice{
+	clear: both;
+	width: 50%;
+	padding:10px 20px;
+	background: #ccc
+}
+.articleNotice h3,
+.articleNotice h2{
+	text-align: center;
+	line-height: 50px;
+	border-bottom:2px solid #fff
+}
+.articleNotice .notice-ctn{
+	height: 500px;
+	padding: 10px;
+	text-indent: 14px;
+	overflow: auto;
+}
+.noticeBottom{
+	border-bottom:2px solid #fff
+}
+.noticeBottom p{
+	padding: 0;
+	width: 210px;
+	line-height: 35px;
+	color: #337AB7
+}
+/*
+***************************************通知新建页****************************************
+*/
+.noticeQuery table input:hover,
+.noticeQuery table input:focus{
+	box-shadow: none;
+	border: none;
+}
+.noticeQuery table textarea:hover,
+.noticeQuery table textarea:focus{
+	border: 1px solid #CCC;
+	box-shadow: none;
+}
+.noticeQuery .newNotice{
+	margin:19px 10px 0px 10px;
+	line-height: 30px;
+}
+.noticeCreate{
+	width: 900px;
+	margin: 0 auto;
+	font-family: verdana,arial,sans-serif;
+	font-size:14px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+.noticeCreate th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+.noticeCreate td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #e5e5e5;
+	font-size: 16px;
+}
+.noticeQuery{
+	clear: both;
+	overflow: hidden;
+	width: 900px;
+	margin: 10px auto;
+}
+.noticeQuery input{
+	margin-left: 15px;
+}
+.noticeQuery textarea{
+	padding: 10px;
+	overflow-y: auto;
+}
+.title{
+	height:46px;
+	width: 100%;
+	text-indent: 15px;
+	border: none;
+}
+.fileBox{
+	position: relative;
+	display: inline-block;
+	padding: 6px 12px;
+	margin-left: 20px;
+	height: 34px;
+	width: 150px;
+	text-indent: 10px;
+	border-radius:5px ;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	cursor: pointer;
+}
+.fileBox .fileTxt{
+	display: block;
+	width:100%;
+	line-height: 34px;
+	text-align: center;
+	font-size: 16px;
+	color: #fff
+}
+.file{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height: 100%;
+	cursor: pointer;
+	filter:alpha(opacity:0);
+	opacity: 0;
+}
+/*
+***************************************打印页面****************************************
+*/
+.mainPri{
+	margin-top:50px; 
+}
+.mainPri .tablaTop th,
+.mainPri .tablaTop td{
+	background: #efefef
+}
+
+/*
+***************************************权限设置(供应商角色、角色管理)****************************************
+*/
+.mainConf{
+	height: 100%;
+	margin-top:-25px ;
+}
+/******************左侧******************/
+.confSide{
+	width: 20%;
+	min-width: 300px;
+	height: 100%;
+	background:#ddd;
+	text-align: center;
+}
+.confSide h3{
+	height: 50px;
+	line-height: 50px;
+	position: relative;
+	border-bottom:2px solid #aaa;
+}
+.confSide .icon{
+	position: absolute;
+	top:0;
+	margin-left:10px; 
+	font-size: 30px;
+	font-weight: bold;
+	color: #337AB7;
+	cursor: pointer;
+}
+.confSide-cnt .confSide-page select{
+	margin:10px;
+	width: 50px; 
+}
+
+/**************右侧*****************/
+.confCnt{
+	width: 70%;
+	min-width: 1100px;
+	padding-right: 5%;
+	margin-left: 50px;
+}
+.confCnt-box{
+	border: 1px solid #aaa;
+	overflow: hidden;
+}
+.confCnt-form{
+	overflow: hidden
+}
+.confCnt-form .conf{
+	overflow: hidden;
+}
+.confCnt-form .conf h3{
+	text-indent: 20px;
+	background: #ddd;
+	height: 45px;
+	line-height: 45px;
+	border-bottom:  1px solid #aaa;
+	font-weight: bold;
+}
+.confCnt-form .conf h3 input{
+	float: right;
+	padding: 3px 6px;
+	margin-top:10px;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	color: #fff;
+	margin-right:15px; 
+}
+.confCnt-form .baseInfo-box{
+	padding:15px 25px;
+}
+.confCnt-form p{
+/*	display: inline-block;*/
+	float: left;
+	margin-bottom:15px; 
+	width: 45%;
+}
+.confCnt-form p label{
+	display: block;
+}
+.confCnt-form p input{
+	padding: 6px 12px; 
+}
+.confCnt-form p select{
+	width: 161px;
+	height: 30px;
+}
+.confCnt-form .btn{
+	width: auto;
+	clear: both;
+	float: right;
+}
+.confCnt-form .btn input{
+	padding: 6px 12px;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	color: #fff;
+	margin:10px; 
+}
+.powerSet-box,
+.roles-box{
+	display: none;
+	position: absolute;	
+	padding:20px;
+	clear: both;
+	background:#eee;	
+	color: #333;
+	border: 1px solid #999
+}
+.powerSet-box{
+	overflow: hidden;
+	top:300px;
+	right: 100px;
+	height: 500px;
+	overflow-y: auto;
+}
+
+.powerSet-box p,
+.roles-box p{
+	margin-bottom:15px; 
+}
+.powerSet-box .btn{
+	text-align: center;
+}
+.powerSet-box .btn input,
+.roles-box .btn input,
+.powerSet-box .title input{
+	padding: 3px 6px;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	border-radius: 5px;
+	color: #fff;
+}
+.roles-box{
+	top:300px;
+	right: 100px;
+	overflow: hidden;
+}
+
+.status-box{
+	display: none;
+	position: absolute;
+	padding:20px;
+	clear: both;
+	background:#eee;
+	color: #333;
+	border: 1px solid #999
+}
+.status-box p{
+	margin-bottom:15px;
+}
+.status-box{
+	top:300px;
+	right: 100px;
+	overflow: hidden;
+}
+.status-box .checkbox input{
+	margin-right:10px;
+}
+
+.roles-box .checkbox input{
+	margin-right:10px; 
+}
+.mainConf .shopList-cnt{
+	top:300px;
+	right: 100px;
+}
+.pwNotice li{float: left}
+/*
+***************************************供应商管理****************************************
+*/
+.supply_admin .query-list p label{
+	display: inline
+}
+.supply_admin .query-list p label{
+	display: inline
+}
+.supply_admin .query-list .btn{
+	float: right;
+}
+
+.supply_admin table a{
+	font-size: 25px
+}
+.supply_admin table .click{
+	cursor: pointer;
+	color: #337AB7
+}
+
+.supply_admin input{
+	margin-right:10px; 
+}
+.setPwd .confCnt-form p{
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+.setPwd .confCnt-form .newpwd{
+	text-indent: 25px;
+}
+.setPwd .confCnt-form p label{
+	display:inline
+}
+.setPwd .confCnt-form .btn input{
+	width: 100px;
+}
+.setPwd .btn{
+	clear:both;
+	width: 100%;
+	text-align: center;
+}
+.retail-log .query .query-list p label{
+	display: inline;
+}
+.retail-log .query .query-list p .query-enter{
+	margin-top: 0
+}
+/*
+***************************************分页按钮****************************************
+*/
+.page{
+	text-align: center;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.page a{
+	display: inline-block;
+	height: 24px;
+	line-height: 24px;
+	padding:0 12px;
+	margin:0 2px;
+}
+.page span{
+	display: inline-block;
+	height: 24px;
+	line-height: 24px;
+	_line-height: 20px;
+	padding:0 12px;
+	margin:0 2px;
+}
+.page .pageTxt{
+	width:29px;
+	padding:0 3px;
+	height: 24px;
+	line-height: 24px\9;
+	_line-height: 28px\9;
+	color:#333;
+	text-align: center;
+}
+.page #pageEnter{
+	width:44px;
+	height: 24px;
+	line-height: 24px\9;
+	padding:0 3px;
+	margin-right: 7px;
+	border: 1px solid #ccc;
+	background-color: #337AB7;
+	border-color: #2E6DA4;
+	cursor: pointer;
+	line-height: 24px;
+	font-size: 12px;
+}
+.page #pageForm{
+	display: inline-block;
+}
+
+/*************************************inputBox********************************************/
+.inputBox{
+	margin-bottom: 15px;
+	overflow: hidden;
+	border: 1px solid #bbb;
+	padding:10px;
+}
+.box-line{
+	overflow: hidden;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.box-line p{
+	float: left;
+	width: 240px;
+	margin-left: 100px;
+	text-align: right;
+}
+.settleApply .box-line p{
+	margin-left: 50px;
+}
+
+.box-line .date{
+	width: 500px;
+}
+.box-line p label{
+	margin-bottom:5px;
+	text-align: left;
+	height: 30px;
+	line-height: 30px;
+}
+.box-line p span{
+	display: inline-block;
+}
+.box-line p input[type=text]{
+	height: 30px;
+	line-height: 30px;
+	width: 140px;
+	text-indent: 10px;
+	background-color: #fff;
+	border-color: #ccc;
+	padding:0;
+	color: #333;
+	text-align: left;
+	font-size: 12px;
+}
+.box-line p span{
+	padding:0;
+	line-height: 30px;
+	width: 150px;
+	text-indent: 10px;
+	border-color: #ccc;
+	color: #333;
+	text-align: left;
+	font-size: 12px;
+}
+.box-line p select{
+	height: 30px;
+	width: 140px;
+}
+.inputBox .query-enter{
+	margin-top: 23px;
+}
+.invioce table th{
+	font-size: 12px;
+	font-weight: normal;
+	background: #efefef
+}
+.invioce table td{padding:0;}
+.invioce table td input{
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	border-radius: 0;
+	border:none;
+	text-indent: 2px;
+}
+.invioce .addLine .button{
+	font-size: 10px;
+	line-height: 15px;
+	height: 15px;
+}
+
+
+.printHead{
+	overflow: hidden;
+	padding:10px;
+	border: 1px solid #bbb;
+}
+/*.printHead p{*/
+	/*margin-left: 30px;*/
+	/*line-height: 35px;*/
+	/*height: 35px;*/
+/*}*/
+
+.tableBox{
+	position: relative;
+	clear: both;
+	margin-top:15px;
+	overflow: hidden;
+	min-height: 200px;
+}
+.tableBox table{
+	width: 40%;
+	float: left;
+	margin-left: 50px;
+}
+.tableBox table th{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 5px;
+	background: #efefef;
+}
+.tableBox table td{
+	padding: 2px;
+	background: #efefef;
+}
+.tableBox .seal{
+	position: absolute;
+    bottom:30px;
+    right: 180px;
+    float: left;
+    margin-left:100px;
+    width: 90px;
+    height: 30px;
+    line-height:30px;
+    border: 1px dotted #666;
+}
+.checker{
+	clear: both;
+	height: 35px;
+	margin-top:20px;
+}
+.checker span{
+	margin-right: 100px;
+	text-align: left;
+}
+.table2 table th{
+	font-weight: normal;
+	font-size: 16px;
+}
+
+/************************************对账方式部分开始*************************************/
+.sideBox .payType{
+	display: block;
+	text-align: left;
+}
+
+.listBox{
+	text-align: left;
+	padding-left:35px;
+	margin-top:15px;
+}
+.list{
+	padding-left: 25px;
+}
+.listBox .listTitle{
+	font-weight: bold;
+	font-size: 14px;
+}
+.list ul{
+	/*display: none;*/
+}
+.payTypeBox{
+	width: 500px;
+	padding-top: 20px;
+	margin: 0 auto;
+}
+.payTypeBox p{
+	width: 100%;
+}
+.payTypeBox p label{
+	display: inline-block;
+}
+.payTypeList{
+	clear: both;
+	padding-left: 15px;
+	height: 400px;
+	width: 300px;
+	overflow-y: auto;
+	border: 1px solid #999;
+	background: #fff;
+}
+.payTypeList li label{
+	margin-left: 10px;
+	line-height: 25px;
+}
+.pageBottom-btn label{
+	margin-top: 19px;
+	padding: 6px 12px;
+}
+#rowNum{
+	background:#fff;
+	width: 20px;
+	color: #333;
+}
+
+
+
+.common_load{
+	width:200px;
+	hieght:120px;
+	display:none;
+	position:absolute;
+	background: #FFFFFF;
+	z-index:999;
+	-moz-box-shadow: 3px 3px 6px #000;
+	-webkit-box-shadow: 3px 3px 6px #000;
+	box-shadow: 3px 3px 6px #000;
+}
+
+.shelter{
+	background:#D5D5D5;
+	-moz-opacity: 0.6;
+	opacity:.6;
+	filter: alpha(opacity=60);
+	display:none;
+	position:absolute;
+	z-index:999;
+	left:0;
+	top:0;
+}
+.load_descript{
+	text-align:center;
+	padding-left:20px;
+	font-weight:bold;
+	font-size:14px;
+	color:#A40000;
+	display:block;
+	padding-bottom:10px;
+}
+
+.noticeTemplate{
+	border: 1px solid #666;
+	width: 85%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 1200px) and ( max-width: 1399px) {
+
+	body{
+		font-size: 12px;
+	}
+	/***********表单部分*************/
+	input[type="button"],
+	input[type="submit"],
+	.button{
+		height: 28px;
+		font-size: 12px;
+		text-indent: 0;
+	}
+	.button{
+		min-width: 30px;
+		min-height: 28px;
+		line-height: 28px;
+	}
+	.query .query-list p{
+		margin-right: 15px;
+		width: auto;
+	}
+	.query .query-list p input[type="text"],
+	.query .query-list p select,
+	.query-list #end,
+	.query-list #start{
+		height: 28px;
+		line-height: 28px;
+		width: 115px;
+		font-size: 10px;
+		text-indent: 5px;
+	}
+	.query .query-list .num{
+		width: 320px;
+	}
+	.query .query-list .num input[type="text"]{
+		width: 115px;
+	}
+	.query-enter,
+	.query-print,
+	.printBtn,
+	.outPut{
+		font-size: 12px;
+		margin-left: 0px;
+	}
+	.settleApply .box-line p {
+		margin-left: 20px;
+	}
+	.box-line p {
+		width: 230px;
+	}
+	.box-line p {
+		margin-left: 50px;
+	}
+
+	/************导航部分************/
+	.nav .nav-list .nav-list-item {
+		font-size: 12px;
+	}
+	/***********通知部分*************/
+	.noticeCreate td{
+		font-size: 12px;
+	}
+	.query input,
+	.query textarea{
+		margin-left: 0;
+		font-size: 12px;
+	}
+	.fileBox{
+		height: 24px;
+	}
+	.fileBox .fileTxt {
+		line-height: 24px;
+		font-size: 12px;
+	}
+	.title{
+		height: 30px;
+	}
+	.query .newNotice{
+		line-height: 20px;
+		font-size: 12px;
+	}
+	/************首页部分************/
+	.noticeHome{
+		width: 900px;
+		margin-right: 100px;
+	}
+
+	/************表格部分************/
+	table th{
+		font-size: 12px;
+	}
+	table td{
+		font-size: 10px;
+	}
+
+	.mainConf .confSide{
+		min-width: 200px;
+	}
+	.mainConf .confCnt {
+    	min-width: 750px;
+		padding-right: 0;
+		margin-left:50px;
+	}
+	.shopList-cnt,
+	.scList-cnt,
+	.powerSet-box{
+		width: 280px;
+	}
+}
+@media screen and (min-width: 992px) and ( max-width: 1199px){
+	body{
+		font-size: 10px;
+	}
+	input[type="button"],
+	input[type="submit"],
+	.button{
+		height: 25px;
+		font-size: 10px;
+		text-indent: 0;
+	}
+	.button{
+		min-width: 30px;
+		min-height: 25px;
+		line-height: 25px;
+	}
+	.query{
+		width: 1000px;
+	}
+    .query .query-list .input{
+        margin-right: 12px;
+    }
+	.query .query-list p input[type="text"],
+	.query .query-list p input[type="password"] {
+		height: 25px;
+		line-height: 25px;
+		width: 90px;
+		font-size: 10px;
+		text-indent: 5px;
+	}
+	.query .query-list p select {
+		height: 25px;
+		line-height: 25px;
+		font-size: 10px;
+		width: 70px;
+		text-indent: 0;
+	}
+	.query-enter, .query-print, .printBtn, .outPut{
+		font-size: 12px;
+		margin-left: 0px;
+	}
+	.query .query-list p{
+		margin-right: 9px;
+	}
+	.query .query-list p input{
+		width: auto;
+	}
+	.query-list #end,
+	.query-list #start {
+		width: 105px;
+	}
+	.box-line p {
+		margin-left: 0;
+	}
+	.box-line p input[type="text"]{
+		height: 25px;
+		line-height: 25px;
+		font-size: 10px;
+		width: auto;
+	}
+	.box-line p select {
+		height: 25px;
+		line-height: 25px;
+		font-size: 10px;
+	}
+	.settleApply .box-line p {
+		margin-left: 0;
+		width: 190px;
+	}
+	.box-line p span{
+		font-size: 10px;
+		width: 130px;
+	}
+
+	.nav-list2{
+		width: 98px;
+	}
+	.nav-list2 li a{
+		font-size: 10px;
+	}
+	.nav .nav-list .nav-list-item {
+		font-size: 10px;
+		width: 100px;
+	}
+
+	.noticeHome{
+		width: 700px;
+		margin-right: 0px;
+	}
+	.sideNav .sideNav-list .sideNav-list-item a{
+		font-size: 12px;
+	}
+
+	table th{
+		font-size: 10px;
+		padding: 4px;
+	}
+	table td{
+		font-size: 10px;
+	}
+	table td select,
+	table td input{
+		font-size: 10px;
+	}
+	.invioce table th{
+		font-size: 10px;
+	}
+	.shopList-cnt,
+	.scList-cnt,
+	.powerSet-box{
+		width: 250px;
+	}
+	.shopList-cnt th,
+	.scList-cnt th ,
+	.powerSet-box th,
+	.shopList-cnt td,
+	.scList-cnt td,
+	.powerSet-box td{
+		font-size: 9px;
+	}
+	.shopList-cnt-tit span, .scList-cnt-tit span{
+		margin-right: 0px;
+	}
+	.shopList-cnt-tit label, .scList-cnt-tit label{
+		margin-right: 15px;
+	}
+
+	/********新建通知*******/
+	.noticeCreate td{
+		font-size: 10px;
+	}
+	.query input,
+	.query textarea{
+		margin-left: 0;
+		font-size: 10px;
+	}
+	.fileBox{
+		height: 24px;
+	}
+	.fileBox .fileTxt {
+		line-height: 24px;
+		font-size: 10px;
+	}
+	.title{
+		height: 30px;
+	}
+	.query .newNotice{
+		line-height: 20px;
+		font-size: 10px;
+	}
+
+	.page #pageEnter{
+		font-size: 10px
+	}
+
+	.mainConf .confSide{
+		min-width: 200px;
+	}
+	.mainConf .confCnt {
+    	min-width: 750px;
+		padding-right: 0;
+		margin-left:50px;
+	}
+
+	.confCnt-form p select {
+		width: 161px;
+		height: 25px;
+		font-size: 10px;
+	}
+	.confCnt-form p input {
+		font-size: 10px;
+	}
+}
+

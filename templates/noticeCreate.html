@@ -1,0 +1,141 @@
+{% load basefilter %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商业供应链系统</title>
+    <link rel="stylesheet" href="{{ static }}/css/reset.css" type="text/css">
+    <link rel="stylesheet" href="{{ static }}/css/main.css" type="text/css">
+    <script type="text/javascript" src="{{ static }}/js/laydate.js"></script>
+</head>
+<body>
+    {% include "common/nav.html" %}
+    <div class="query noticeQuery">
+        <form id="queryForm" name="queryForm" method="post" action="{% url 'msgCreate' %}"  enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="hidden" name="infotype" value="{{ infoType }}">
+            <input type="hidden" name="infocode" value="{{ infoCode }}">
+            <input type="hidden" name="action" value="{{ action }}">
+            <table class="noticeCreate">
+                <tbody>
+                      <tr>
+                          <td width="30%" colspan="2">作者: {{ userName }}</td>
+                          <td width="30%">时间:{{ nowtime | date:'Y-m-d H:i' }}</td>
+                          <td align="left">
+                              {% if action != 'answer' %}
+                              <div class="fileBox">
+                                  <span class='fileTxt'>上传附件</span>
+                                  <input class="file" id="file" type="file" name="file">
+                                  <input type="hidden" name="oldpath" value="{{ mailpath }}">
+                              </div>　
+                              <span id="fileName" class="red" style="display: inline-block;width: 120px;line-height:18px;font-size:12px;overflow: hidden">{% if filename %}{{ filename }}{% else %}无附件{% endif %}</span>
+                              {% endif %}
+
+
+                          </td>
+                      </tr>
+
+                      <tr>
+                          <td colspan="4" align="left">
+                              接收人:
+                              {% if userType == "2" %}
+                                  <input class="txt" name="accesstype" checked="" value="21" type="radio">
+                                  指定接收部门
+                                  {% if action == 'answer' %}
+                                      <input type="text" name="depart" value="{{ info.checker }}">
+                                  {% else %}
+                                      <select name="depart" id="depart" style="width: 150px">
+                                          {% for item in basKeList %}
+                                              <option value="{{ item.kbcode }}">{{ item.kbname }}</option>
+                                          {% endfor %}
+                                      </select>
+                                  {% endif %}
+
+                              {% elif userType == "1" %}
+                                  {% if action == 'answer' %}
+                                      <input name="accesstype" value="13" type="radio">全部
+                                      <input name="accesstype" value="11" type="radio" checked="checked" >指定编码(多个可逗号分隔)
+                                      <input class="txt" type="text" name="depart" id="depart" value="{{ revcode }}">
+                                  {% else %}
+                                      <input name="accesstype" checked="checked" value="13" type="radio">全部
+                                      <input name="accesstype" value="11" type="radio">指定编码(多个可逗号分隔)
+                                      <input class="txt" type="text" name="depart" id="depart" style="width: 400px;height: 30px" value="{{ info.depart }}" readonly>
+                                  {% endif %}
+                              {% endif %}
+                          </td>
+                      </tr>
+
+                      <tr>
+                          <td>标题:</td>
+                          <td colspan="3" align="left" style="padding: 0">
+                              {% if action == 'answer' %}
+                                  <input class="title txt" id="title" type="text" name="title" value="回复：{{ info.title }}">
+                              {% else %}
+                                  <input class="title txt" id="title" type="text" name="title" value="{{ info.title }}">
+                              {% endif %}
+
+                          </td>
+                      </tr>
+                      <tr>
+                          <td colspan="4">
+                              <textarea class="txt" name="content" id="content" cols="100" rows="20">{{ info.content | trim }}</textarea>
+                          </td>
+                      </tr>
+                </tbody>
+            </table>
+            <input type="hidden" id="actionTxt" name="actionTxt" value="">
+            <input class="query-print right" id="enter" type="submit" value="提交">
+			<input class="button right newNotice" onclick="add()" type="button" value="继续添加新通知">
+            <input class="query-enter right" type="button" value="返回" onclick="window.history.back();return false;">
+        </form>
+    </div>
+     {% include "common/footer.html" %}
+    <script>
+        current = "tongzhi";
+
+        $(function(){
+             $('#depart').find("option[value='{{ info.depart }}']").attr("selected", true);
+             $('input[name="accesstype"]').on("change",function(){
+                 var atype = $(this).val();
+                 if(atype==13){
+                      $('#depart').val('');
+                      $('#depart').prop('readonly', true);
+                 }else{
+                     $('#depart').prop('readonly', false);
+                 }
+             });
+        });
+
+        function add(){
+            window.location.href= "{% url 'msgCreate' %}?infotype={{ infoType }}";
+        }
+
+        $("#file").change(function(){
+            $("#fileName").html($(this).val());
+        });
+        $("#enter").click(function(e) {
+            var title = $.trim($("#title").val());
+            var content = $.trim($("#content").val());
+            if (content == "" || title == "") {
+                alert("公告标题和内容为必填项，不能为空");
+                if (e.preventDefault) {
+                    e.preventDefault();
+                } else {
+                    window.event.returnValue = false;
+                }
+            }
+        });
+
+            {% if succ == "1" %}
+                alert('公告编辑并发布成功');
+                window.location.href="{% url 'msglist' %}?flag=msgOut";
+            {% elif succ == "2" %}
+                alert('公告发布成功');
+                window.location.href="{% url 'msglist' %}?flag=msgOut";
+            {% elif succ == "3" %}
+                alert('回复成功');
+                window.location.href="{% url 'msglist' %}?flag=msgOut";
+            {% endif %}
+    </script>
+</body>
+</html>

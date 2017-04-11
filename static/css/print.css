@@ -1,0 +1,129 @@
+body{font-size: 10px;}
+.noprint{display : none }
+.tTitle{
+    text-align: center;
+}
+.printHead{
+    width: 100%;
+    overflow: hidden;
+	border: 0;
+    padding-bottom: 10px;
+    padding-right: 5px;
+}
+a{
+    text-decoration:none;
+    color: #333333;
+}
+table{
+    width: 100%;
+    font-family:SimSun; /* verdana,arial,sans-serif*/
+    font-size:10px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;
+}
+table th {
+    border-width: 1px;
+    /*padding: 8px;*/
+    font-weight: normal;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #dedede;
+}
+table td {
+    border-width: 1px;
+   /*padding: 8px;*/
+    border-style: solid;
+    border-color: #666666;
+    background-color: #ffffff;
+    text-align: left;
+    /*float:left;*/
+}
+table .sumlabel {
+    text-align: center;
+    /*float:left;*/
+}
+.table-noborder td{
+    border-color:#fff ;
+    text-align: left;
+   /* border:1px solid #000000;*/
+}
+.table-noborder .label{
+    text-align: left;
+
+}
+.table-noborder .money{
+    font-size: 18px;
+    font-family:SimSun;
+    font-weight: bold;
+}
+.tableBox{
+    position: relative;
+    min-height: 155px;
+    margin-top: 20px;
+    overflow: hidden;
+
+}
+.table50{
+    width: 50%;
+    float: left;
+    margin-left: 10px;
+}
+.tableBox .seal {
+    position: absolute;
+    bottom:30px;
+    right: 80px;
+    float:right;
+    margin-left:80px;
+    width: 80px;
+    height: 30px;
+    line-height:30px;
+    border: 1px dotted #666;
+}
+.table2{
+    margin-top: 30px;
+    clear:both;
+    margin-left: 10px;
+}
+.checker{
+    clear:both;
+    margin-top: 15px;
+    margin-left: 10px;
+    text-align: left;
+}
+.checker span{
+    text-align: left;
+    width: 12%;
+    display: inline-block;
+}
+.checker span.long{
+    min-width: 120px;
+}
+
+.noticeTemplate{
+	width:100%;
+}
+
+/*******************/
+.table-noborder2 td{
+    border-color:#fff ;
+    text-align: left;
+   /* border:1px solid #000000;*/
+}
+.table-noborder2 .label{
+    text-align: left;
+
+}
+.table-noborder2 p{
+    font-size: 10px;
+    font-family:SimSun;
+    width: auto;
+}
+
+.table-noborder2 p span{
+    margin-top:20px;
+    margin-top:10px;
+    width: 33%;
+    float:left;
+}

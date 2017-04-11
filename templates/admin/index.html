@@ -1,0 +1,129 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            商业供应链系统
+        </title>
+    </head>
+    <body>
+        {% include "common/nav.html" %}
+        <div class="mainHome comWidth">
+            <div class="sideNav left" style="margin-top: 30px;">
+                <ul class="sideNav-list">
+                    <li class="sideNav-list-item">
+                        <a href="/scm/base/menu/?mtype=0" title="sysConf">系统配置</a>
+                    </li>
+                    <li class="sideNav-list-item">
+                        <a href="/scm/base/menu/?mtype=1" title="retail">零售商数据</a>
+                    </li>
+                    <li class="sideNav-list-item">
+                        <a href="/scm/base/menu/?mtype=3" title="synNotice">协同信息</a>
+                    </li>
+                    {% comment %} <li class="sideNav-list-item">
+                        <a href="javascript:void(0);" title="加密锁mac绑定" onclick="javascript:soft_key_validator.authorized();">绑定加密锁</a>
+                    </li>{% endcomment %}
+                </ul>
+            </div>
+            <div class="noticeHome right">
+                <div style="text-align: left;font-size: 15px;border:1px solid #d3d3d3;background-color:#fcedd9;height:30px;line-height:30px;padding-left: 5px;">
+                    <p>
+                        <span>提示：1、报表下载功能所需服务程序：<a href="{{ static }}/js/softkey/SetUp.exe" style="color:dodgerblue;">SetUp.exe-点击下载</a>，下载后需手动安装。</span><br/>
+                       {% comment %} <span>&emsp;&emsp;&emsp;2、一个加密锁只能同时绑定一台电脑，更换电脑时需要重新绑定并与管理员联系激活加密锁信息。</span>{% endcomment %}
+                    </p>
+                </div>
+                <div class="tTitle">
+                    <h2>
+                        供应商通知
+                    </h2>
+                </div>
+                <table border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                    <thead>
+                        <tr>
+                            <th>
+                                编号
+                            </th>
+                            <th>
+                                标题
+                            </th>
+                            <th>
+                                发布时间
+                            </th>
+                            <th>
+                                发布单位
+                            </th>
+                            <th>
+                                发布人
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          {% for row in page.object_list %}
+                            <tr>
+                                <td>{{ row.infocode }}</td>
+                                <td>
+                                    <a href="/scm/base/msg/info/?infocode={{ row.infocode }}" >{{ row.title }}</a>
+                                </td>
+                                <td>{{ row.subtime | date:'Y-m-d H:i'}}</td>
+                                <td>{{ row.usergrpname }}</td>
+                                <td>{{ row.username }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="page">
+                    <span>第<b>{{ pageNum }}</b>页/共<b>{{ page.paginator.num_pages }}</b>页</span>
+                    <a href="/scm/base/admin/index/?pageNum=1">首页</a>
+                    {% if page.has_previous %}
+                        <a href="/scm/base/admin/index/?pageNum={{ page.previous_page_number }}">上一页</a>
+                    {% else %}
+                        <a href="javascript:void(0)" >上一页</a>
+                    {% endif %}
+
+                    {% if page.has_next %}
+                         <a href="/scm/base/admin/index/?pageNum={{ page.next_page_number }}">下一页</a>
+                    {% else %}
+                        <a href="javascript:void(0)" >下一页</a>
+                    {% endif %}
+
+                    <a href="/scm/base/admin/index/?pageNum={{ page.paginator.num_pages }}">尾页</a>
+
+                    <form method="get" id="codeForm" action="/scm/base/admin/index/" style="display: inline-block">
+                        <span class="totalPage">到第</span> <input type="text" class="pageTxt"  id="pageNum" name="pageNum"  value="{{ pageNum }}"> <span>页</span>
+                        <input type="button" id="pageEnter" value="确定" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% include "common/footer.html" %}
+        <script type="text/javascript">
+            current="shouye"
+
+            $(".sideNav-list-item").click(function(){
+                var i_sideNav=$(this).index();
+                $(".nav").find(".nav-list").eq(i_sideNav).show().siblings().hide();
+            })
+            $(function(){
+                $("#pageEnter").on("click",function(){
+
+                    var pageNum = $("#pageNum").val();
+
+                    if(!isNaN(pageNum) && pageNum!=''){
+                        var num = parseInt(pageNum);
+                        var maxNum = parseInt('{{ page.paginator.num_pages }}');
+
+                        if(num<1){
+                             $("#pageNum").val(1);
+                        }
+                        if(num>maxNum){
+                            $("#pageNum").val(maxNum);
+                        }
+                    }else{
+                         $("#pageNum").val(1);
+                    }
+                    $("#codeForm").submit();
+                });
+            });
+        </script>
+        <script type="text/javascript" src="http://tajs.qq.com/stats?sId=55965179" charset="UTF-8"></script>
+    </body>
+</html>

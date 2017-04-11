@@ -1,0 +1,240 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>商业供应链系统</title>
+    </head>
+    <body>
+        {% load basefilter %}
+        {% include "common/nav.html" %}
+        <div class="query comWidth noprint">
+            <form class="query-list" method="post" action="{% url 'balance' %}">
+                {% csrf_token %}
+                <div class="shopList input">
+                    <label>结算位置代码:：</label>
+                    {{ form.shopid }}
+                    <span class="shopList-icon"></span>
+                    <div class="shopList-cnt">
+                        <p class="shopList-cnt-tit">
+                          {% comment %}  <span>门店：</span>{% endcomment %}
+                            <input type="checkbox" name="" id="" class="all"><label for="" style="display: inline">全选/全不选</label>
+                            <input class="enter" type="button" value="确定">
+                            <input class="close" type="button" value="放弃">
+                        </p>
+                        <table border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                            <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>门店编码</th>
+                                    <th>门店名称</th>
+                                  {% comment %}  <th>经营方式</th>{% endcomment %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for shop in shopList %}
+                                <tr>
+                                    <td><input type="checkbox" name="" id="" value="{{ shop.shopcode }}" title="{{ shop.shopnm }}"></td>
+                                    <td >{{ shop.shopcode }}</td>
+                                    <td class="shopNm">{{ shop.shopnm }}</td>
+                                   {% comment %} <td></td>{% endcomment %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <p class="input">
+                    <label for="start">制单开始日期：</label>
+                    {{ form.start }}
+                    {{ form.start.errors }}
+                </p>
+                <p class="input">
+                    <label for="end">制单结束日期：</label>
+                    {{ form.end }}
+                    {{ form.end.errors }}
+                </p>
+                <p class="input">
+                    <label>单号：</label>
+                    {{ form.sheetId }}
+                </p>
+                <p class="input">
+                    <label>审核状态：</label>
+                    {{ form.flag }}
+                </p>
+                <p class="input">
+                    <label>排序条件：</label>
+                    {{ form.orderStyle }}
+                </p>
+                <p class="input">
+                    <input class="query-enter" type="submit" value="查询">
+                </p>
+                <p class="input">
+                    <input class="query-print" type="button" value="打印" onclick=" javascript:print()">
+                </p>
+            </form>
+
+        </div>
+        <div class="mainSettle comWidth">
+            <div class="tTitle">
+                <h1>
+                        {% if flag == '0' %}制单未审核{% elif flag == '1,4'%}单据待审批{% elif flag == '2' %}扣项缴款待审核{% elif flag == '3' %}付款待审核{% elif flag == '100' %}已付款{% else %}全部{% endif %}结算单列表
+                </h1>
+                <h3>
+                    单位：<span>{{ grpName }}</span>
+                </h3>
+                <p>
+                    结算位置：
+                    <span class="shopListTxt">
+                        {% if shopId %}
+                            {% for id in shopId %}
+                               {{ shopDict | key:id}}
+                                {% if not forloop.last %}
+                                    ，
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            全部
+                        {% endif %}
+{#                    {% for shopocde in shopCodedistinct %}#}
+{#                       {{ shopDict | key:shopocde}}，#}
+{#                    {% endfor %}#}
+                    </span>
+                </p>
+                <p>
+                    <b>时间：</b><span>{{ start }}至{{ end }}</span>
+                    <b>单位：</b><span>元</span>
+                </p>
+
+            </div>
+            <div style="text-align: left;font-size: 13px;"><p><span style="color: red;font-size: 14px;">※</span>&nbsp;1.结算单审核状态为：<span style="color:red;font-size: 14px;">2-单据待审批</span>,才可打印结算单、开发票、录发票。2.结算单审核状态为：<span style="color:red;font-size: 14px;">4-付款待审核</span>,才代表已经缴费成功，进入付款程序。</p></div>
+            <table border="0" cellpadding="3" cellspacing="1" width="100%" align="center" style="background-color: #999;">
+                <thead>
+                    <tr>
+                        <th>结算位置</th>
+                        <th>供应商编码</th>
+                        <th>供应商名称</th>
+                        <th>结算单编号</th>
+                        <th>上次结算日期</th>
+                        <th>本次结算日期</th>
+                        <th>制单日期</th>
+                        <th>审核状态</th>
+                        <th>发票状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for balance in balanceList %}
+                    <tr>
+                        <td>
+                            {{ shopDict | key:balance.shopid }}
+                        </td>
+                        <td>{{ balance.venderid }}</td>
+                        <td>{{ vendername }}</td>
+                        <td>
+                            <a href="{% url 'balanceArticle' %}?sheetid={{ balance.sheetid }}">
+                                {{ balance.sheetid }}
+                            </a>
+                        </td>
+                        <td>{{ balance.begindate | date:'Y-m-d' }}</td>
+                        <td>{{ balance.enddate | date:'Y-m-d' }}</td>
+                        <td>{{ balance.editdate | date:'Y-m-d' }}</td>
+                        <td>{% if balance.flag == 0 %}1-制单未审核{% elif balance.flag == 1 or balance.flag == 4 %}2-单据待审批{% elif balance.flag == 2 %}3-扣项缴款待审核{% elif balance.flag == 3 %}4-付款待审核{% elif balance.flag == 100 %}5-已付款{% endif %}</td>
+                        <td>{% if balance.inviocestatus == 1 %}<span style="color:green;">已录入</span>{% else %}<span style="color:red;">未录入</span>{% endif %}</td>
+                        <td><a href="{% url 'createInvioce' %}?sheetid={{ balance.sheetid }}">录发票</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="page noprint">
+                 <span>第<b>{{ page }}</b> 页 /共<b>{{ balanceList.paginator.num_pages }}</b>页</span>
+                <a href="?page=1{% if shopCodeStr %}&shopcode={{ shopCodeStr }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if sheetId %}&sheetid={{ sheetId }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if orderStyle %}&orderstyle={{ orderStyle }}{% endif %}">首页</a>
+
+                {% if balanceList.has_previous %}
+                <a href="?page={{ balanceList.previous_page_number }}{% if shopCodeStr %}&shopcode={{ shopCodeStr }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if sheetId %}&sheetid={{ sheetId }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if orderStyle %}&orderstyle={{ orderStyle }}{% endif %}">上一页</a>
+                {% else %}
+                <a href="javascript:;">上一页</a>
+                {% endif %}
+
+                {% if balanceList.has_next %}
+                <a href="?page={{ balanceList.next_page_number }}{% if shopCodeStr %}&shopcode={{ shopCodeStr }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if sheetId %}&sheetid={{ sheetId }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if orderStyle %}&orderstyle={{ orderStyle }}{% endif %}">下一页</a>
+                {% else %}
+                <a href="javascript:;">下一页</a>
+                {% endif %}
+
+                <a href="?page={{ balanceList.paginator.num_pages }}{% if shopCodeStr %}&shopcode={{ shopCodeStr }}{% endif %}{% if start %}&start={{ start }}{% endif %}{% if end %}&end={{ end }}{% endif %}{% if sheetId %}&sheetid={{ sheetId }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if orderStyle %}&orderstyle={{ orderStyle }}{% endif %}">尾页</a>
+                <form id="pageForm" name="pageForm" method="get">
+                    <input name="shopcode" type="hidden" value="{{ shopCodeStr }}">
+                    <input name="sheetid" type="hidden" value="{{ sheetId }}">
+                    <input name="start" type="hidden" value="{{ start }}">
+                    <input name="end" type="hidden" value="{{ end }}">
+                    <input name="status" type="hidden" value="{{ status }}">
+                    <input name="orderstyle" type="hidden" value="{{ orderStyle }}">
+                    <span class="totalPage">到第</span>
+                    <input class="pageTxt" id="page" name="page" type="text" value="1">
+                    <span>页</span>
+                    <input value="确定" id="pageEnter" type="button">
+                </form>
+            </div>
+        </div>
+        {% include "common/footer.html" %}
+        <script type="text/javascript">
+            current = "jiesuan";
+
+            $(function(){
+                $("#pageEnter").on("click",function(){
+
+                    var pageNum = $("#page").val();
+
+                    if(!isNaN(pageNum) && pageNum!=''){
+                        var num = parseInt(pageNum);
+                        var maxNum = parseInt('{{ balanceList.paginator.num_pages }}');
+
+                        if(num<1){
+                             $("#page").val(1);
+                        }
+                        if(num>maxNum){
+                            $("#page").val(maxNum);
+                        }
+                    }else{
+                         $("#page").val(1);
+                    }
+                    $("#pageForm").submit();
+                });
+            });
+            !function(){
+                laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+
+            }();
+
+            //日期范围限制
+            var start = {
+                elem: '#start',
+                format: 'YYYY-MM-DD',
+                //min: laydate.now(), //设定最小日期为当前日期
+                max: '2099-06-16', //最大日期
+                istime: false,
+                istoday: false,
+                choose: function(datas){
+                   end.min = datas; //开始日选好后，重置结束日的最小日期
+                   end.start = datas //将结束日的初始值设定为开始日
+                }
+            };
+
+            var end = {
+                elem: '#end',
+                format: 'YYYY-MM-DD',
+               // min: laydate.now(),
+                max: '2099-06-16',
+                istime: false,
+                istoday: false,
+                choose: function(datas){
+                    start.max = datas; //结束日选好后，充值开始日的最大日期
+                }
+            };
+            laydate(start);
+            laydate(end);
+
+
+        </script>
+    </body>
+</html>
